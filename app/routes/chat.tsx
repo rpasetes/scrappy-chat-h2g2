@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
+import { Button } from "~/components/ui/button"
 
 // (1707) personal nit: turned off readwise plugin
 // cause weird hydration errors in dev environment
@@ -40,6 +41,7 @@ export default function Chat() {
           onChange={e => setInput(e.currentTarget.value)}
         />
       </form>
+      <Button>Click me</Button>
     </div>
   );
 }
