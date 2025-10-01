@@ -3,6 +3,7 @@ import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
 import { Button } from "~/components/ui/button"
 import type { Route } from "./+types/chat"
+import { Starfield } from "~/components/ui/starfield-1"
 
 export default function Chat({ loaderData }: Route.ComponentProps) {
   const [input, setInput] = useState('')
@@ -13,8 +14,9 @@ export default function Chat({ loaderData }: Route.ComponentProps) {
   })
 
   return (
-    <>
-      <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+    <div className="absolute inset-0 -z-10 flex h-screen w-full flex-col items-center justify-center">
+      <Starfield />
+      <div className="relative overflow-y-auto z-10 flex flex-col w-full max-w-md py-24 mx-auto stretch">
         {messages.map(message => (
           <div key={message.id} className="whitespace-pre-wrap">
             {message.role === 'user' ? 'User: ' : 'AI: '}
@@ -26,7 +28,6 @@ export default function Chat({ loaderData }: Route.ComponentProps) {
             })}
           </div>
         ))}
-
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -48,6 +49,6 @@ export default function Chat({ loaderData }: Route.ComponentProps) {
           </Button>
         </form>
       </div>
-    </>
+    </div>
   );
 }
