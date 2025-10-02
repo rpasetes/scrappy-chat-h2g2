@@ -6,6 +6,7 @@ import type { Route } from "./+types/chat"
 import { Starfield } from "~/components/ui/starfield-1"
 import { redirect, type LoaderFunctionArgs } from "react-router"
 import { auth } from "~/lib/auth.server"
+import LogOut from "~/components/logout"
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await auth.api.getSession({ headers: request.headers })
@@ -60,6 +61,7 @@ export default function Chat({ loaderData }: Route.ComponentProps) {
           </Button>
         </form>
       </div>
+      <LogOut />
     </div>
   );
 }
