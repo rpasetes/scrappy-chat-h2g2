@@ -3,10 +3,15 @@ import { Form } from "react-router"
 import { useState } from "react"
 import { authClient } from "~/lib/auth-client"
 
-export default function SignUp() {
+type SignUpProps = {
+  toggleLogin: () => void
+}
+
+export default function SignUp({ toggleLogin }: SignUpProps) {
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
+
 
   const signUp = async () => {
     await authClient.signUp.email(
@@ -32,7 +37,7 @@ export default function SignUp() {
   return (
     <div className="text-center text-stone-200">
       <h2>
-        or glad to have you,
+        Glad to have you,
       </h2>
       <Form
         className="flex flex-col justify-center"
@@ -65,6 +70,11 @@ export default function SignUp() {
           Sign Up
         </button>
       </Form>
+      <button
+        className="mt-4"
+        onClick={toggleLogin}>
+        Return to Login
+      </button>
     </div>
   )
 }
