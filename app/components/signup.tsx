@@ -30,26 +30,30 @@ export default function SignUp() {
   }
 
   return (
-    <div>
+    <div className="text-center text-stone-200">
       <h2>
-        Sign Up
+        or glad to have you,
       </h2>
       <Form
+        className="flex flex-col justify-center"
         onSubmit={signUp}
       >
         <input
+          className="text-center"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
         />
         <input
+          className="text-center"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
         />
         <input
+          className="text-center"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
