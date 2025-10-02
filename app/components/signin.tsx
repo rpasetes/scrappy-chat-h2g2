@@ -2,10 +2,12 @@
 import { Form, redirect } from "react-router"
 import { useState } from "react"
 import { authClient } from "~/lib/auth-client"
+import { useNavigate } from "react-router"
 
 export default function SignIn() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
   const signIn = async () => {
     await authClient.signIn.email(
@@ -16,7 +18,7 @@ export default function SignIn() {
       {
         onSuccess: (ctx) => {
           console.log('logging in!', ctx.data)
-          redirect('/chat')
+          navigate('/chat')
         },
         onError: (ctx) => {
           alert(ctx.error)
@@ -28,7 +30,7 @@ export default function SignIn() {
   return (
     <div>
       <h2 className="text-center text-stone-200">
-        Welcome back,
+        Log in.
       </h2>
       <Form className="flex flex-col justify-center text-stone-200 text-center" onSubmit={signIn}>
         <input
@@ -36,14 +38,14 @@ export default function SignIn() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="user"
+          placeholder="email"
         />
         <input
           className="text-center"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="..."
+          placeholder="password"
         />
         <button
           className="text-stone-200"
