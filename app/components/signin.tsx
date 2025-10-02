@@ -33,9 +33,6 @@ export default function SignIn({ toggleLogin }: SignInProps) {
 
   return (
     <div className="text-center text-stone-200">
-      <h2>
-        Log in:
-      </h2>
       <Form className="flex flex-col justify-center" onSubmit={signIn}>
         <input
           className="text-center"
@@ -55,10 +52,12 @@ export default function SignIn({ toggleLogin }: SignInProps) {
           className="text-stone-200"
           type="submit"
         >
-          Enter the Guide
+          ENTER THE GUIDE
         </button>
       </Form>
-      <button onClick={toggleLogin}>
+      <button
+        className="mt-4"
+        onClick={toggleLogin}>
         First time?
       </button>
     </div>

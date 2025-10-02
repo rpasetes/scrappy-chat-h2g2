@@ -41,8 +41,10 @@ export default function Home() {
       </div>
       <div className="flex flex-col relative z-10 align-center justify-center">
         <img src="/dont_panic.svg" />
-        <SignIn toggleLogin={toggleLogin} />
-        <SignUp toggleLogin={toggleLogin} />
+        {signingUp
+          ? <SignUp toggleLogin={toggleLogin} />
+          : <SignIn toggleLogin={toggleLogin} />
+        }
       </div>
     </div>
   )

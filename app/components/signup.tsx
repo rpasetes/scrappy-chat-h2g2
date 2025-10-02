@@ -70,7 +70,9 @@ export default function SignUp({ toggleLogin }: SignUpProps) {
           Sign Up
         </button>
       </Form>
-      <button onClick={toggleLogin}>
+      <button
+        className="mt-4"
+        onClick={toggleLogin}>
         Return to Login
       </button>
     </div>
