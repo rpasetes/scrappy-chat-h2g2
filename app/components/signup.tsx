@@ -23,7 +23,7 @@ export default function SignUp() {
           // redirect to home
         },
         onError: (ctx) => {
-          alert(ctx.error)
+          console.log(ctx.error)
         },
       },
     )
