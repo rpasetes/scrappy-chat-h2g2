@@ -4,7 +4,11 @@ import { useState } from "react"
 import { authClient } from "~/lib/auth-client"
 import { useNavigate } from "react-router"
 
-export default function SignIn() {
+type SignInProps = {
+  toggleLogin: () => void
+}
+
+export default function SignIn({ toggleLogin }: SignInProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
@@ -28,11 +32,11 @@ export default function SignIn() {
   }
 
   return (
-    <div>
-      <h2 className="text-center text-stone-200">
-        Log in.
+    <div className="text-center text-stone-200">
+      <h2>
+        Log in:
       </h2>
-      <Form className="flex flex-col justify-center text-stone-200 text-center" onSubmit={signIn}>
+      <Form className="flex flex-col justify-center" onSubmit={signIn}>
         <input
           className="text-center"
           type="email"
@@ -54,6 +58,9 @@ export default function SignIn() {
           Enter the Guide
         </button>
       </Form>
+      <button onClick={toggleLogin}>
+        First time?
+      </button>
     </div>
   )
 }
