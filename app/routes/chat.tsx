@@ -54,14 +54,14 @@ export default function Chat({ loaderData }: Route.ComponentProps) {
             onChange={e => setInput(e.currentTarget.value)}
           />
           <Button
-            className="fixed dark:bg-stone-800 hover:bg-stone-700 border border-stone-300 dark:border-stone-800 bottom-0"
+            className="fixed dark:bg-stone-800 hover:bg-stone-700 bottom-0"
             type="submit"
           >
             Submit
           </Button>
+          <LogOut />
         </form>
       </div>
-      <LogOut />
     </div>
   );
 }

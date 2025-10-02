@@ -1,4 +1,4 @@
-import { redirect, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { authClient } from "~/lib/auth-client";
 import { Button } from "./ui/button";
 
@@ -20,7 +20,7 @@ export default function LogOut() {
   }
 
   return (
-    <Button className="z-20" onClick={signOut}>
+    <Button className="fixed right-0 z-20 bottom-0" onClick={signOut}>
       Log Out
     </Button>
   )

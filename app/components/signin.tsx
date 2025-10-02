@@ -21,7 +21,7 @@ export default function SignIn() {
           navigate('/chat')
         },
         onError: (ctx) => {
-          alert(ctx.error)
+          console.log(ctx.error)
         },
       },
     )
