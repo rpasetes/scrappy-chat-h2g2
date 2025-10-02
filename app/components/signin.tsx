@@ -1,5 +1,5 @@
 // from Better-Auth React Router Integration:
-import { Form } from "react-router"
+import { Form, redirect } from "react-router"
 import { useState } from "react"
 import { authClient } from "~/lib/auth-client"
 
@@ -14,11 +14,9 @@ export default function SignIn() {
         password,
       },
       {
-        onRequest: (ctx) => {
-          // show loading state
-        },
         onSuccess: (ctx) => {
-          // redirect to home
+          console.log('logging in!', ctx.data)
+          redirect('/chat')
         },
         onError: (ctx) => {
           alert(ctx.error)
@@ -29,26 +27,29 @@ export default function SignIn() {
 
   return (
     <div>
-      <h2>
-        Sign In
+      <h2 className="text-center text-stone-200">
+        Welcome back,
       </h2>
-      <Form onSubmit={signIn}>
+      <Form className="flex flex-col justify-center text-stone-200 text-center" onSubmit={signIn}>
         <input
+          className="text-center"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="..."
+          placeholder="user"
         />
         <input
+          className="text-center"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="..."
         />
         <button
+          className="text-stone-200"
           type="submit"
         >
-          Sign In
+          Enter the Guide
         </button>
       </Form>
     </div>
