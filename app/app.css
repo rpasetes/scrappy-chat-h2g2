@@ -17,6 +17,51 @@ body {
   }
 }
 
+@keyframes bob {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(-1.2deg);
+  }
+}
+
+@keyframes drift {
+
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0) scale(1)
+  }
+
+  50% {
+    transform: translate3d(6px, -8px, 0) rotate(1deg) scale(1.01)
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0) scale(1);
+  }
+}
+
+@layer utilities {
+  .animate-bob {
+    animation: bob 6s ease-in-out infinite;
+  }
+
+  .animate-drift {
+    animation: drift 10s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-bob,
+  .animate-drift {
+    animation: none !important;
+  }
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
