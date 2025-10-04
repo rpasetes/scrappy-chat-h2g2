@@ -36,20 +36,25 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <div className="absolute -z-10 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
+    <div className="relative min-h-dvh">
+      <div className="max-w-screen-2xl absolute inset-0 -z-10 flex min-w-dvw flex-col items-center justify-center overflow-hidden">
         <Starfield />
       </div>
-      <img
-        className="relative motion-safe:animate-pulse [transform-gpu] [will-change:transform]"
-        src="/dont_panic.svg"
-      />
-      <div className="flex flex-col relative mt-14 z-20 align-center justify-center">
-        {signingUp
-          ? <SignUp toggleLogin={toggleLogin} />
-          : <SignIn toggleLogin={toggleLogin} />
-        }
-      </div>
+      <section className="mx-auto min-h-dvh z-10 grid md:grid-cols-[1fr_auto] items-center">
+        <div className="flex justify-center self-center ">
+          <img
+            className="relative motion-safe:animate-pulse [transform-gpu] [will-change:transform]"
+            src="/dont_panic.svg"
+          />
+        </div>
+        <div className="flex flex-col items-center md:items-stretch max-w-md w-full text-2xl">
+          {signingUp
+            ? <SignUp toggleLogin={toggleLogin} />
+            : <SignIn toggleLogin={toggleLogin} />
+          }
+        </div>
+        <audio src='h2g2.mp3' autoPlay />
+      </section>
     </div>
   )
 }
