@@ -1,11 +1,10 @@
 import SignIn from "~/components/signin";
 import SignUp from "~/components/signup";
 import type { Route } from "./+types/home";
-import { Starfield } from "~/components/ui/starfield-1";
 import { redirect, type LoaderFunctionArgs } from "react-router";
 import { auth } from "~/lib/auth.server";
 import { useState } from "react";
-import Logo from "~/components/Logo";
+import StarryBackground from "~/components/StarryBackground";
 
 
 export function meta({ }: Route.MetaArgs) {
@@ -36,20 +35,24 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <div className="absolute -z-10 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
-        <Starfield />
-      </div>
-      <img
-        className="relative motion-safe:animate-pulse [transform-gpu] [will-change:transform]"
-        src="/dont_panic.svg"
-      />
-      <div className="flex flex-col relative mt-14 z-20 align-center justify-center">
-        {signingUp
-          ? <SignUp toggleLogin={toggleLogin} />
-          : <SignIn toggleLogin={toggleLogin} />
-        }
-      </div>
+    <div className="relative min-h-dvh">
+      <StarryBackground />
+      <section className="absolute inset-0 z-10 grid place-content-center md:place-items-center
+                px-6 mx-auto w-full max-w-screen-2xl md:grid-cols">
+        <div className="flex justify-center self-center ">
+          <img
+            className="justify-self-center md:justify-self-end w-full max-w-4xl motion-safe:animate-pulse [will-change:transform] [transform-gpu]"
+            src="/dont_panic.svg"
+          />
+        </div>
+        <div className="w-full max-w-sm md:max-w-md justify-self-center md:justify-self-start text-4xl md:text-2xl">
+          {signingUp
+            ? <SignUp toggleLogin={toggleLogin} />
+            : <SignIn toggleLogin={toggleLogin} />
+          }
+        </div>
+        <audio src='h2g2.mp3' autoPlay />
+      </section>
     </div>
   )
 }
