@@ -1,0 +1,1 @@
+ALTER TABLE "entry" RENAME COLUMN "references" TO "related_topics";
