@@ -1,6 +1,6 @@
 import { db } from "~/lib/database";
 import { entry as entryTable, readingHistory } from "~/lib/entry-schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import type { Route } from "./+types/entry.$slug";
 import { useLoaderData, Link } from "react-router";
 import { auth } from "~/lib/auth.server";
@@ -20,14 +20,50 @@ export async function loader({ request, params }: Route.LoaderFunctionArgs) {
   const { slug } = params;
 
   // Fetch the entry
-  const entries = await db
+  let entries = await db
     .select()
     .from(entryTable)
     .where(eq(entryTable.slug, slug))
     .limit(1);
 
+  // If entry doesn't exist, generate it
   if (!entries.length) {
-    throw new Response("Entry not found", { status: 404 });
+    try {
+      const generateResponse = await fetch(
+        `${new URL(request.url).origin}/api/generate-entry`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: slug.replace(/-/g, " ") }),
+        }
+      );
+
+      if (!generateResponse.ok) {
+        throw new Response(`Failed to generate entry: ${generateResponse.statusText}`, {
+          status: 500,
+        });
+      }
+
+      const { entry: generatedEntry } = (await generateResponse.json()) as {
+        entry: typeof entries[0];
+      };
+
+      // Fetch the newly created entry
+      entries = await db
+        .select()
+        .from(entryTable)
+        .where(eq(entryTable.slug, slug))
+        .limit(1);
+
+      if (!entries.length) {
+        throw new Response("Entry not found after generation", { status: 500 });
+      }
+    } catch (error) {
+      console.error("Error generating entry:", error);
+      throw new Response("Entry not found and could not be generated", {
+        status: 404,
+      });
+    }
   }
 
   const entryData = entries[0];
@@ -41,8 +77,7 @@ export async function loader({ request, params }: Route.LoaderFunctionArgs) {
       ? await db
           .select({ slug: entryTable.slug, title: entryTable.title })
           .from(entryTable)
-          .where((t) => ({ slug: relatedSlugs }))
-          .where((t) => relatedSlugs.includes(t.slug))
+          .where(inArray(entryTable.slug, relatedSlugs))
       : [];
 
   // Track reading history if user is logged in

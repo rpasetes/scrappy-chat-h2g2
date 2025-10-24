@@ -5,6 +5,7 @@ export default [
   route("api/ai", "routes/api.ai.ts"),
   route("api/auth/*", "routes/api.auth.$.ts"),
   route("api/seed", "routes/api.seed.ts"),
+  route("api/generate-entry", "routes/api.generate-entry.ts"),
   route("protected", "routes/protected.tsx"),
   route("chat", "routes/chat.tsx"),
   route("home", "routes/home.tsx"),

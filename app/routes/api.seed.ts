@@ -57,7 +57,7 @@ export async function action({ request }: Route.ActionFunctionArgs) {
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error) {
     console.error("❌ Error seeding guide:", error);
@@ -69,7 +69,7 @@ export async function action({ request }: Route.ActionFunctionArgs) {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 }
