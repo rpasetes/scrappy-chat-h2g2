@@ -106,10 +106,18 @@ function parseJsonField(field: string | null): string[] {
   }
 }
 
+function capitalizeSlug(slug: string): string {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function EntryView() {
   const { entry, relatedEntries } = useLoaderData<typeof loader>();
 
   const toc = parseJsonField(entry.tableOfContents);
+  const relatedSlugs = parseJsonField(entry.relatedTopics);
 
   return (
     <div className="min-h-screen bg-stone-900 text-stone-100">
@@ -181,24 +189,39 @@ export default function EntryView() {
       </div>
 
       {/* See Also / Related Links */}
-      {relatedEntries.length > 0 && (
+      {relatedSlugs.length > 0 && (
         <section className="border-t border-stone-800 bg-stone-900/50 backdrop-blur">
           <div className="max-w-4xl mx-auto px-6 py-12">
             <h3 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-6">
               See Also
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {relatedEntries.map((relatedEntry) => (
-                <Link
-                  key={relatedEntry.slug}
-                  to={`/entry/${relatedEntry.slug}`}
-                  className="p-4 rounded border border-stone-700 hover:border-stone-600 hover:bg-stone-800/50 transition-colors group"
-                >
-                  <div className="font-medium text-stone-100 group-hover:text-stone-50">
-                    {relatedEntry.title}
-                  </div>
-                </Link>
-              ))}
+              {relatedSlugs.map((slug) => {
+                const relatedEntry = relatedEntries.find((e) => e.slug === slug);
+                const title = relatedEntry?.title || capitalizeSlug(slug);
+                const isGenerated = !relatedEntry;
+
+                return (
+                  <Link
+                    key={slug}
+                    to={`/entry/${slug}`}
+                    className={`p-4 rounded border transition-colors group ${
+                      isGenerated
+                        ? "border-stone-700 hover:border-stone-600 hover:bg-stone-800/30 opacity-75"
+                        : "border-stone-700 hover:border-stone-600 hover:bg-stone-800/50"
+                    }`}
+                  >
+                    <div className="font-medium text-stone-100 group-hover:text-stone-50">
+                      {title}
+                    </div>
+                    {isGenerated && (
+                      <div className="text-xs text-stone-500 mt-1">
+                        (Will generate on visit)
+                      </div>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
