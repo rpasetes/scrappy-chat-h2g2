@@ -1,6 +1,6 @@
 import { db } from "~/lib/database";
 import { entry as entryTable, readingHistory } from "~/lib/entry-schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import type { Route } from "./+types/entry.$slug";
 import { useLoaderData, Link } from "react-router";
 import { auth } from "~/lib/auth.server";
@@ -20,14 +20,50 @@ export async function loader({ request, params }: Route.LoaderFunctionArgs) {
   const { slug } = params;
 
   // Fetch the entry
-  const entries = await db
+  let entries = await db
     .select()
     .from(entryTable)
     .where(eq(entryTable.slug, slug))
     .limit(1);
 
+  // If entry doesn't exist, generate it
   if (!entries.length) {
-    throw new Response("Entry not found", { status: 404 });
+    try {
+      const generateResponse = await fetch(
+        `${new URL(request.url).origin}/api/generate-entry`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: slug.replace(/-/g, " ") }),
+        }
+      );
+
+      if (!generateResponse.ok) {
+        throw new Response(`Failed to generate entry: ${generateResponse.statusText}`, {
+          status: 500,
+        });
+      }
+
+      const { entry: generatedEntry } = (await generateResponse.json()) as {
+        entry: typeof entries[0];
+      };
+
+      // Fetch the newly created entry
+      entries = await db
+        .select()
+        .from(entryTable)
+        .where(eq(entryTable.slug, slug))
+        .limit(1);
+
+      if (!entries.length) {
+        throw new Response("Entry not found after generation", { status: 500 });
+      }
+    } catch (error) {
+      console.error("Error generating entry:", error);
+      throw new Response("Entry not found and could not be generated", {
+        status: 404,
+      });
+    }
   }
 
   const entryData = entries[0];
@@ -41,8 +77,7 @@ export async function loader({ request, params }: Route.LoaderFunctionArgs) {
       ? await db
           .select({ slug: entryTable.slug, title: entryTable.title })
           .from(entryTable)
-          .where((t) => ({ slug: relatedSlugs }))
-          .where((t) => relatedSlugs.includes(t.slug))
+          .where(inArray(entryTable.slug, relatedSlugs))
       : [];
 
   // Track reading history if user is logged in
@@ -71,10 +106,18 @@ function parseJsonField(field: string | null): string[] {
   }
 }
 
+function capitalizeSlug(slug: string): string {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function EntryView() {
   const { entry, relatedEntries } = useLoaderData<typeof loader>();
 
   const toc = parseJsonField(entry.tableOfContents);
+  const relatedSlugs = parseJsonField(entry.relatedTopics);
 
   return (
     <div className="min-h-screen bg-stone-900 text-stone-100">
@@ -146,24 +189,39 @@ export default function EntryView() {
       </div>
 
       {/* See Also / Related Links */}
-      {relatedEntries.length > 0 && (
+      {relatedSlugs.length > 0 && (
         <section className="border-t border-stone-800 bg-stone-900/50 backdrop-blur">
           <div className="max-w-4xl mx-auto px-6 py-12">
             <h3 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-6">
               See Also
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {relatedEntries.map((relatedEntry) => (
-                <Link
-                  key={relatedEntry.slug}
-                  to={`/entry/${relatedEntry.slug}`}
-                  className="p-4 rounded border border-stone-700 hover:border-stone-600 hover:bg-stone-800/50 transition-colors group"
-                >
-                  <div className="font-medium text-stone-100 group-hover:text-stone-50">
-                    {relatedEntry.title}
-                  </div>
-                </Link>
-              ))}
+              {relatedSlugs.map((slug) => {
+                const relatedEntry = relatedEntries.find((e) => e.slug === slug);
+                const title = relatedEntry?.title || capitalizeSlug(slug);
+                const isGenerated = !relatedEntry;
+
+                return (
+                  <Link
+                    key={slug}
+                    to={`/entry/${slug}`}
+                    className={`p-4 rounded border transition-colors group ${
+                      isGenerated
+                        ? "border-stone-700 hover:border-stone-600 hover:bg-stone-800/30 opacity-75"
+                        : "border-stone-700 hover:border-stone-600 hover:bg-stone-800/50"
+                    }`}
+                  >
+                    <div className="font-medium text-stone-100 group-hover:text-stone-50">
+                      {title}
+                    </div>
+                    {isGenerated && (
+                      <div className="text-xs text-stone-500 mt-1">
+                        (Will generate on visit)
+                      </div>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
