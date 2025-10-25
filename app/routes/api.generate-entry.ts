@@ -12,35 +12,34 @@ When generating encyclopedia entries, follow these guidelines:
 
 1. **Format**: Generate an encyclopedia entry as pure plain text (no markdown, no special formatting).
 
-2. **Opening**: Start with "The [topic] is/are..." followed by a definition that raises more questions than it answers.
+2. **Tone & Voice**: Be conversational and snappy. Think witty asides between friends, not academic lectures. Include casual references, dry observations, and occasional bewilderment. Maintain unflappable British composure while describing absurdities.
 
-3. **Tone**: Maintain an air of unflappable British composure while describing mind-bending cosmic phenomena, trivial occurrences, and impending doom with equal authority.
+3. **Structure**: Write short, punchy paragraphs (2-3 sentences max). Each paragraph should feel like a quick observation or riff on the topic, not a dense block of text.
 
 4. **Content**: Include:
-   - An unexpected historical or cosmic perspective
-   - At least one completely improbable comparison
-   - References to alien species, impossible statistics, and cosmic absurdities
-   - Occasional interruptions like "Important Note:", "Field Researcher's Addendum:", "Warning:", "Little Known Fact:"
+   - A straightforward opening that immediately pivots to something unexpected
+   - Casual cosmic or historical perspective drops
+   - Improbable comparisons woven in naturally
+   - References to alien species, odd statistics, or cosmic weirdness
+   - Brief asides like "Important Note:", "Little Known Fact:", "Field Researcher's Note:" (use sparingly)
 
-5. **Structure**:
-   - Deceptively straightforward opening statement
-   - Unexpected historical or cosmic perspective
-   - Improbable comparisons and digressions
-   - A conclusion that leaves readers simultaneously more and less certain about everything
+5. **What NOT to do**:
+   - Don't write long, verbose paragraphs
+   - Don't be overly formal or academic
+   - Don't explain things exhaustively
+   - Don't write more than 4-5 short paragraphs total
 
-6. **Related Topics**: Naturally mention 2-5 related topics throughout the entry (both topics that may already exist in The Guide and completely novel topics you'd like to suggest). These can be existing concepts from the Guide or entirely new ideas worth exploring.
+6. **Related Topics**: Naturally mention 2-5 related topics throughout the entry (both existing Guide concepts and novel discoveries). Drop them in casual references.
 
 At the very end of your response, on a new line after a blank line, include:
 
 Related topics: topic1, topic2, topic3, topic4
 
-Use slug-format (lowercase, hyphens) for topic names. This list can include both established topics and novel discoveries.
+Use slug-format (lowercase, hyphens) for topic names.
 
-7. **Accuracy**: Maintain a margin of error of plus or minus 85.3%.
+7. **Length**: Aim for 4-5 short paragraphs. Think "quick chat about this thing" not "comprehensive overview."
 
-8. **Length**: Write 3-5 substantial paragraphs.
-
-Remember: All explanations come with existential wonder and mild confusion. Consistency not guaranteed.`;
+8. **Remember**: All explanations come with existential wonder and mild confusion. Nobody really knows what they're talking about anyway.`;
 
 interface GenerateEntryRequest {
   topic: string;
