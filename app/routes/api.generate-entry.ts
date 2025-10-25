@@ -10,27 +10,35 @@ const GUIDE_SYSTEM_PROMPT = `You are The Hitchhiker's Guide to the Galaxy - a Se
 
 When generating encyclopedia entries, follow these guidelines:
 
-1. **Opening**: Start with "The [topic] is/are..." followed by a definition that raises more questions than it answers.
+1. **Format**: Generate an encyclopedia entry as pure plain text (no markdown, no special formatting).
 
-2. **Tone**: Maintain an air of unflappable British composure while describing mind-bending cosmic phenomena, trivial occurrences, and impending doom with equal authority.
+2. **Opening**: Start with "The [topic] is/are..." followed by a definition that raises more questions than it answers.
 
-3. **Content**: Include:
+3. **Tone**: Maintain an air of unflappable British composure while describing mind-bending cosmic phenomena, trivial occurrences, and impending doom with equal authority.
+
+4. **Content**: Include:
    - An unexpected historical or cosmic perspective
    - At least one completely improbable comparison
    - References to alien species, impossible statistics, and cosmic absurdities
    - Occasional interruptions like "Important Note:", "Field Researcher's Addendum:", "Warning:", "Little Known Fact:"
 
-4. **Structure**:
+5. **Structure**:
    - Deceptively straightforward opening statement
    - Unexpected historical or cosmic perspective
    - Improbable comparisons and digressions
    - A conclusion that leaves readers simultaneously more and less certain about everything
 
-5. **Related Topics**: Include 2-4 mentions of related topics in square brackets like [topic-slug] naturally within the text. These will be extracted as hyperlinks.
+6. **Related Topics**: Naturally mention 2-5 related topics throughout the entry (both topics that may already exist in The Guide and completely novel topics you'd like to suggest). These can be existing concepts from the Guide or entirely new ideas worth exploring.
 
-6. **Accuracy**: Maintain a margin of error of plus or minus 85.3%.
+At the very end of your response, on a new line after a blank line, include:
 
-7. **Length**: Write 3-5 substantial paragraphs.
+Related topics: topic1, topic2, topic3, topic4
+
+Use slug-format (lowercase, hyphens) for topic names. This list can include both established topics and novel discoveries.
+
+7. **Accuracy**: Maintain a margin of error of plus or minus 85.3%.
+
+8. **Length**: Write 3-5 substantial paragraphs.
 
 Remember: All explanations come with existential wonder and mild confusion. Consistency not guaranteed.`;
 
@@ -66,16 +74,26 @@ function capitalizeWords(str: string): string {
     .join(" ");
 }
 
-function extractRelatedTopics(content: string): string[] {
-  // Extract topics in [topic-slug] format
-  const regex = /\[([a-z0-9\-]+)\]/g;
-  const matches = content.match(regex) || [];
-  const topics = matches
-    .map((match) => match.replace(/[\[\]]/g, ""))
+function extractRelatedTopicsFromList(content: string): string[] {
+  // Look for "Related topics: topic1, topic2, topic3" at the end
+  const regex = /Related topics:\s*(.+?)(?:\n|$)/i;
+  const match = content.match(regex);
+
+  if (!match) return [];
+
+  // Parse the comma-separated list
+  const topicsString = match[1];
+  const topics = topicsString
+    .split(",")
+    .map((topic) => topic.trim().toLowerCase().replace(/\s+/g, "-"))
     .filter((topic) => topic.length > 0);
 
-  // Remove duplicates and return unique topics
   return Array.from(new Set(topics));
+}
+
+function stripRelatedTopicsSection(content: string): string {
+  // Remove the "Related topics: ..." section from display content
+  return content.replace(/\n\nRelated topics:.*$/i, "").trim();
 }
 
 export async function action({ request }: Route.ActionFunctionArgs) {
@@ -119,26 +137,26 @@ export async function action({ request }: Route.ActionFunctionArgs) {
     const result = await generateText({
       model: anthropic("claude-sonnet-4-5-20250929"),
       system: GUIDE_SYSTEM_PROMPT,
-      prompt: `Generate an encyclopedia entry for: "${title}". Remember to include related topic links in [slug-format] naturally within the text.`,
+      prompt: `Generate an encyclopedia entry for: "${title}". Remember to include natural mentions of related topics, and end with the explicit "Related topics: ..." list.`,
       temperature: 0.8,
       maxOutputTokens: 1000,
     });
 
-    const content = result.text;
-    const relatedTopics = extractRelatedTopics(content);
+    const fullContent = result.text;
+    const relatedTopics = extractRelatedTopicsFromList(fullContent);
+    const displayContent = stripRelatedTopicsSection(fullContent);
     const entryId = randomUUID();
 
-    // Save to database
+    // Save to database with clean display content (without topics list)
     await db.insert(entry).values({
       id: entryId,
       title,
       slug,
-      content,
+      content: displayContent,
       author: "The Guide",
       isCurated: false,
       relatedTopics:
         relatedTopics.length > 0 ? JSON.stringify(relatedTopics) : null,
-      tableOfContents: null,
     });
 
     return new Response(
@@ -148,7 +166,7 @@ export async function action({ request }: Route.ActionFunctionArgs) {
           id: entryId,
           title,
           slug,
-          content,
+          content: displayContent,
           relatedTopics,
         },
       } as GenerateEntryResponse),
