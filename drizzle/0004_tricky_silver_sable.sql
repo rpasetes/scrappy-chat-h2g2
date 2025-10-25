@@ -1,0 +1,1 @@
+ALTER TABLE "entry" DROP COLUMN "table_of_contents";

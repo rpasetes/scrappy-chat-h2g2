@@ -35,9 +35,6 @@ export async function action({ request }: Route.ActionFunctionArgs) {
         content: curatedEntry.content,
         author: curatedEntry.author,
         isCurated: curatedEntry.isCurated,
-        tableOfContents: curatedEntry.tableOfContents
-          ? JSON.stringify(curatedEntry.tableOfContents)
-          : null,
         relatedTopics: curatedEntry.relatedTopics
           ? JSON.stringify(curatedEntry.relatedTopics)
           : null,
