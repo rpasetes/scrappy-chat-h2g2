@@ -116,7 +116,6 @@ function capitalizeSlug(slug: string): string {
 export default function EntryView() {
   const { entry, relatedEntries } = useLoaderData<typeof loader>();
 
-  const toc = parseJsonField(entry.tableOfContents);
   const relatedSlugs = parseJsonField(entry.relatedTopics);
 
   return (
@@ -150,31 +149,9 @@ export default function EntryView() {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-4 gap-12">
-        {/* Table of Contents Sidebar */}
-        {toc.length > 0 && (
-          <aside className="lg:col-span-1">
-            <div className="sticky top-8">
-              <h3 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">
-                Contents
-              </h3>
-              <nav className="space-y-2">
-                {toc.map((section, idx) => (
-                  <a
-                    key={idx}
-                    href={`#${section.toLowerCase().replace(/\s+/g, "-")}`}
-                    className="block text-sm text-stone-400 hover:text-stone-200 transition-colors"
-                  >
-                    {section}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </aside>
-        )}
-
+      <div className="max-w-4xl mx-auto px-6 py-12">
         {/* Entry Content */}
-        <article className={toc.length > 0 ? "lg:col-span-3" : "lg:col-span-4"}>
+        <article>
           <div className="prose prose-invert max-w-none">
             {entry.content.split("\n\n").map((paragraph, idx) => (
               <p

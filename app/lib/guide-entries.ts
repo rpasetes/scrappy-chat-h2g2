@@ -9,7 +9,6 @@ export interface CuratedEntry {
   content: string;
   author: "The Guide";
   isCurated: true;
-  tableOfContents?: string[];
   relatedTopics?: string[]; // Slugs for "See Also" section
 }
 
@@ -26,13 +25,6 @@ The planet was destroyed to make way for a hyperspace bypass, though a small res
 Earth is home to a species called humans, who are known for their improbable sophistication given their limited understanding of physics, metaphysics, and the proper way to make tea. The planet's climate is characterized by a curious phenomenon called "weather," which is essentially the planet's way of reminding inhabitants that existence is fundamentally absurd.
 
 The planet's surface features include water (lots of it), land (not as much), and a thin layer of atmosphere that is just barely sufficient to prevent immediate suffocation. Scientists theorize this is either a happy accident or evidence of deliberate design by someone with a very dark sense of humor.`,
-    tableOfContents: [
-      "Basic Facts",
-      "History",
-      "Notable Features",
-      "Inhabitants",
-      "Climate and Atmosphere",
-    ],
     relatedTopics: ["humans", "dolphins", "the-great-barrier-reef"],
   },
   {
@@ -49,13 +41,6 @@ Notable human achievements include the invention of philosophy (fundamentally un
 Humans possess approximately 206 bones, 639 muscles, and an almost infinite capacity for self-deception. They are the only species known to laugh at their own mortality, which the Guide attributes either to remarkable courage or remarkable stupidity. The jury is still out.
 
 The average human lifespan is surprisingly brief when compared to most other sentient species in the galaxy, yet humans somehow manage to worry about things that won't matter in a hundred years. This is either admirable or pathetic, depending on your perspective.`,
-    tableOfContents: [
-      "Physical Characteristics",
-      "Intelligence and Curiosity",
-      "Notable Behaviors",
-      "Cultural Achievements",
-      "Mortality and Perspective",
-    ],
     relatedTopics: ["earth", "civilization", "the-meaning-of-life"],
   },
   {
@@ -74,13 +59,6 @@ Deep Thought then suggested building an even more powerful computer to determine
 Some researchers have spent their entire lives trying to divine the question from the answer. Others have simply accepted 42 as a complete and satisfactory answer to all possible questions, and have gotten on with their lives. This is arguably the wiser approach.
 
 One enterprising human has proposed that the question is "What is six times seven?" which would make the answer 42, though this seems to be missing the point entirely.`,
-    tableOfContents: [
-      "The Answer",
-      "Deep Thought",
-      "The Ultimate Question",
-      "Earth as a Computer",
-      "Modern Interpretations",
-    ],
     relatedTopics: ["deep-thought", "earth", "vogons"],
   },
   {
@@ -97,13 +75,6 @@ The Vogons were responsible for the destruction of Earth to make way for a hyper
 Vogon bureaucracy is legendary throughout the galaxy. Before they do anything, including acts of destruction, they must file the proper forms in triplicate. This has occasionally prevented them from doing truly terrible things, as the paperwork proved more onerous than the destruction itself.
 
 The Vogons also employ the Vogon fleet, which is characterized by its use of enormous ships that look like massive office buildings. These ships are functional but utterly joyless, containing within them the bureaucratic essence of tedium given physical form.`,
-    tableOfContents: [
-      "Physical Characteristics",
-      "Culture and Poetry",
-      "Bureaucratic Practices",
-      "Notable Events",
-      "The Vogon Fleet",
-    ],
     relatedTopics: ["earth", "hyperspace-bypass", "bureaucracy"],
   },
   {
@@ -122,13 +93,6 @@ Deep Thought is housed in a vast chamber and requires an enormous amount of powe
 Interestingly, Deep Thought seems to have a sense of humor, albeit a dark and philosophical one. It makes jokes about metaphysics while dispensing universe-shattering truths, and seems to enjoy pointing out the fundamental inadequacies of its questioners' understanding of reality.
 
 Deep Thought can be consulted on matters of cosmic importance, though the computer typically charges a service fee and expresses some skepticism about whether the questioner has really thought through what they're asking.`,
-    tableOfContents: [
-      "History and Construction",
-      "The Ultimate Question",
-      "The Answer",
-      "Physical Specifications",
-      "Personality and Humor",
-    ],
     relatedTopics: ["the-meaning-of-life", "ultimate-computer", "magratheans"],
   },
   {
@@ -147,13 +111,6 @@ According to the Guide, dolphins left Earth just before it was destroyed by the 
 Dolphins are known for their sophisticated sense of humor and their utter indifference to human opinions about dolphin behavior. They view humans with something approaching pity, mixed with a healthy dose of amusement.
 
 The exact nature of dolphin communication remains a mystery, though it is believed to involve complex concepts of philosophy, mathematics, and sarcasm. The Guide suggests that if humans ever truly understood what dolphins were saying, they would either be enlightened or deeply offended.`,
-    tableOfContents: [
-      "Intelligence and Communication",
-      "Behavior and Culture",
-      "Departure from Earth",
-      "Relationship with Humans",
-      "Philosophy and Humor",
-    ],
     relatedTopics: ["earth", "humans", "the-great-barrier-reef"],
   },
   {
@@ -170,14 +127,7 @@ The reef is remarkable not only for its biodiversity but also for the fact that 
 The colors of the reef are striking—brilliant blues, yellows, oranges, and purples abound. Scientists believe that these colors serve various biological functions, though the Guide suspects they also exist simply because the universe occasionally does beautiful things for no reason at all.
 
 The reef is under threat from climate change, fishing, and the general indifference of humans to the long-term consequences of their actions. The Guide expresses neither surprise nor judgment about this situation, merely stating that the reef's demise will likely be followed by humans expressing surprise that their actions had consequences.`,
-    tableOfContents: [
-      "Location and Structure",
-      "Biodiversity",
-      "Beauty and Colors",
-      "Human Impact",
-      "Future Prospects",
-    ],
-    relatedTopics: ["earth", "dolphins", "australia"],
+    relatedTopics: ["earth", "dolphins", "australia", "marianas-trench"],
   },
   {
     title: "Tea",
@@ -195,14 +145,29 @@ Proper tea preparation is an art form that involves precise measurements, proper
 The Guide has often noted that if aliens ever wanted to understand human civilization, they would be well-served to study human tea culture. The elaborate rituals, the heated debates, and the general inability to agree on anything suggests that humans are either highly philosophical or fundamentally confused.
 
 A surprising fact: humans will often accept terrible beverages simply because they are called "tea," even when they taste nothing like tea and seem designed primarily to punish the drinker.`,
-    tableOfContents: [
-      "Definition and History",
-      "Varieties and Types",
-      "Proper Preparation",
-      "Cultural Significance",
-      "Common Mistakes",
-    ],
     relatedTopics: ["earth", "humans", "the-meaning-of-life"],
+  },
+  {
+    title: "iPhone",
+    slug: "iphone",
+    author: "The Guide",
+    isCurated: true,
+    content: `The iPhone is, rather curiously, not actually a phone at all, but a pocket-sized anxiety generator disguised as a portal to infinite knowledge.
+
+    First discovered by an Earth company called Apple (no relation to the Squornshellous Beta fruit that gained sentience and briefly ruled the Outer Rim), these devices have become so integral to Earth culture that humans have evolved an extra appendage in their hands specifically shaped to hold them.
+
+    Important Note: Early field researchers mistook these devices for religious artifacts, given how frequently humans bow their heads to them in reverence. This misconception was only corrected after researcher Zxylp spent three months disguised as what Earthlings call a "social media influencer."
+
+    The typical iPhone contains:
+    - More computing power than was used to send humans to their moon (though considerably less than what's needed to calculate the proper consistency of a Pan Galactic Gargle Blaster)
+    - A camera capable of capturing moments that would have been better left to memory
+    - Something called "apps," which are like tiny digital universes, each more addictive than the last
+    - A virtual assistant that, compared to Eddie the shipboard computer, has all the personality of a depressed Vogon poet
+
+    Field Researcher's Addendum: The most peculiar feature of these devices is their lifecycle. Despite costing roughly the same as a second-hand spaceship from the Horsehead Nebula, humans regularly replace them with nearly identical models in a ritual they call "upgrading," which appears to serve no purpose other than to temporarily alleviate what Earth economists term "FOMO" (Fear Of Missing Out, not to be confused with FOMO on Betelgeuse Five, which is a rather tasty breakfast cereal).
+
+    Warning: Under no circumstances should one attempt to use an iPhone to calculate the meaning of life, the universe, and everything. It will simply open something called "TikTok" and all hope of productive thought will be lost for approximately 3.7 hours.`,
+    relatedTopics: ["social-media", "technology"],
   },
 ];
 

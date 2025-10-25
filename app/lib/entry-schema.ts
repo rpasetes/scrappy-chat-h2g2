@@ -8,7 +8,6 @@ export const entry = pgTable("entry", {
   content: text("content").notNull(),
   author: text("author").notNull(), // "The Guide" or system identifier
   isCurated: boolean("is_curated").default(false).notNull(),
-  tableOfContents: text("table_of_contents"), // JSON stringified array
   relatedTopics: text("related_topics"), // JSON stringified array of slugs
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
